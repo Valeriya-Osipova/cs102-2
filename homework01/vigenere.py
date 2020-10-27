@@ -25,18 +25,23 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
             indc.append(m.index(i))
         elif i in b:
             indc.append(b.index(i))
+        else:
+            indc.append(i)
     if len(cip) < len(indc):
         for i in range (len(indc)-len(cip)):
             cip.append(cip[i])
     for i in plaintext:
         if i in m:
             for j in range(len(cip)):
-                ciphertext += m[(indc[j] + cip[j])%len(m)]
+                if type(indc[j]) == str:
+                    ciphertext += indc[j]
+                else:
+                    ciphertext += m[(indc[j] + cip[j])%len(m)]
         elif i in b:
             for j in range (len(cip)):
                 ciphertext += b[(indc[j] + cip[j])%len(b)]
         else:
-            ciphertext += i
+            ciphertext += i 
         break
     return ciphertext
 
@@ -62,15 +67,20 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
             indp.append(m.index(i))
         elif i in b:
             indp.append(b.index(i))
+        else:
+            indp.append(i)
     if len(pla) < len(indp):
         for i in range (len(indc) - len(pla)):
             pla.append(pla[i])
     for i in ciphertext:
         if i in m:
-            for j in range(len(cip)):
-                plaintext += m[(indp[j] - pla[j])%len(m)]
+            for j in range(len(pla)):
+                if type(indp[j]) == str:
+                    plaintext += indp[j]
+                else:
+                    plaintext += m[(indp[j] - pla[j])%len(m)]
         elif i in b:
-            for j in range (len(cip)):
+            for j in range (len(pla)):
                 plaintext += b[(indp[j] - pla[j])%len(b)]
         else:
             plaintext += i
